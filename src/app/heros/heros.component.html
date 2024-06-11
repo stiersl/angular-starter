@@ -1,0 +1,17 @@
+<h2>{{ title }}</h2>
+<!-- Add a row for each course -->
+<table class="tb" style="width:300px;">
+<tr>
+  <th>Index</th>
+  <th>ID</th>
+  <th>Name</th>
+</tr>
+
+<tr *ngFor="let hero of heros; let i = index; let even = even; let odd = odd"
+ [ngClass]="{ odd: odd, even: even }">
+  <td>{{i}}</td>
+  <td>{{hero.id}}</td>
+  <td>{{hero.name}}</td>
+</tr>
+</table>
+
