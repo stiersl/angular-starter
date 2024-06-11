@@ -1,3 +1,9 @@
-.tb { border-collapse: collapse; }
+.tb { border-collapse: collapse; border: 2px solid black}
   .tb th, .tb td { padding: 5px; border: solid 1px #777; text-align: center; }
-  .tb th { background-color: lightblue; }
+  .tb th { background-color: blue; color: white; }
+  table,th,td {
+    border: 2px solid black;
+  }
+  .even {
+      background-color: aqua;
+  }

@@ -7,8 +7,8 @@
   <th>Name</th>
 </tr>
 
-<tr *ngFor="let hero of heros; let i = index; let even = even; let odd = odd"
- [ngClass]="{ odd: odd, even: even }">
+<tr *ngFor="let hero of heros; let i = index; even as isEven; odd as isOdd"
+ [ngClass]="{ odd:isOdd, even:isEven }">
   <td>{{i}}</td>
   <td>{{hero.id}}</td>
   <td>{{hero.name}}</td>
