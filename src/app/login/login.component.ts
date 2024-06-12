@@ -1,22 +1,42 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { TokenService, TokenServiceClass } from '../shared/Services/token.service';
 import { myLog } from '../shared/utilities';
+import {FormGroup,FormControl,ReactiveFormsModule,Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [],
+  imports: [CommonModule,ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent  {
   errorMsg: string = '';
   token:string = '';
+  _username:string = '';
+  _password:string = '';
   expiresIn:number=0;
 
-  constructor(private tokenService:TokenService){}
+constructor(private tokenService:TokenService){}
 
-  ngOnInit(): void {
+  // create an object here which will point the form controls (i.e. inputs)
+  myForm = new FormGroup({
+      username: new FormControl('',Validators.required),
+      password: new FormControl('',Validators.required),
+  });
+
+  get username() {
+    return this.myForm.get('username')
+  }
+  get password() {
+    return this.myForm.get('password')
+  }
+    // call the server to see if this username and login are valid.
+    // then set a error on the form if it isnt
+  login(){
+    console.log('Username='+ this.username );
+    console.log('Password='+ this.password );
     this.checkToken();
   }
 
@@ -24,8 +44,9 @@ export class LoginComponent implements OnInit {
 checkToken()  {
   let tokenServiceClass:TokenServiceClass;
   myLog(`Checking Token`);
-
-this.tokenService.getoken()
+  
+ 
+this.tokenService.getoken(this.myForm.get('username')?.value!,this.myForm.get('password')?.value! )
 .subscribe({
   next: (response) => {
     tokenServiceClass = response;

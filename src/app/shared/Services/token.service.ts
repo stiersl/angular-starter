@@ -29,22 +29,30 @@ export class TokenServiceClass {
 export class TokenService {
   constructor(private httpClient:HttpClient) { }
 
-  getoken(): Observable<TokenServiceClass> {
-    // check that the enviroment settings are availiable
-    let url:string  = 'https://' + environment.uaaServiceOrigin + ':' + environment.uaaServicePort  + '/uaa/oauth/token';
-     myLog(('Token URL:'+ url));
-    let reqBody:string = 'grant_type=password';
-        reqBody += '&username=' + environment.paUser;
-        reqBody += '&password=' + environment.paPW;
-        reqBody += '&client_id=' + environment.uaaServiceAdminClientID;
-        reqBody += '&client_secret=' + environment.uaaServiceAdminClientSecret;
-        myLog(('Token req Body:'+ reqBody));
-  if (!(environment.uaaServiceOrigin) || !(environment.uaaServicePort ) ||
-    !(environment.paUser) || !(environment.paPW) ||
+  getoken(username?: string, password?: string): Observable<TokenServiceClass> {
+    
+    // Check to make sure a username and password provided.
+    if  (!(username) || !(password))
+     {
+      return throwError(() => new Error('Missing  username or password'))
+    };
+
+    if (!(environment.uaaServiceOrigin) || !(environment.uaaServicePort ) ||
     !(environment.uaaServiceAdminClientID) || !(environment.uaaServiceAdminClientSecret))
      {
       return throwError(() => new Error('Missing uaaService Enviroment variables.'))
     };
+
+    // check that the enviroment settings are availiable
+    let url:string  = 'https://' + environment.uaaServiceOrigin + ':' + environment.uaaServicePort  + '/uaa/oauth/token';
+     myLog(('Token URL:'+ url));
+    let reqBody:string = 'grant_type=password';
+        reqBody += '&username=' + username;
+        reqBody += '&password=' + password;
+        reqBody += '&client_id=' + environment.uaaServiceAdminClientID;
+        reqBody += '&client_secret=' + environment.uaaServiceAdminClientSecret;
+        myLog(('Token req Body:'+ reqBody));
+
 
     let headers = new HttpHeaders().append('Content-type', 'application/x-www-form-urlencoded');
 
